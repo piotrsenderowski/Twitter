@@ -32,6 +32,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Data entered is incorrect.<br>";
         }
     }
+    $conn->close();
+    $conn = null;
 }
 ?>
 <html>
