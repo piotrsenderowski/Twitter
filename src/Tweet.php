@@ -4,7 +4,7 @@ class Tweet {
     
     static public function getAllTweetsByUserId(mysqli $conn, $userId) {
         $ret = [];
-        $sql = "SELECT * FROM Tweet WHERE userId = $userId";
+        $sql = "SELECT Tweet.id, Tweet.userId, Tweet.tweetText, User.fullName FROM Tweet LEFT JOIN User ON Tweet.userId = User.id WHERE Tweet.userId = $userId ORDER BY Tweet.id DESC";
         $result = $conn->query($sql);
         if($result !== false && $result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -12,6 +12,7 @@ class Tweet {
                 $newTweet->id = $row['id'];
                 $newTweet->userId = $row['userId'];
                 $newTweet->tweetText = $row['tweetText'];
+                $newTweet->fullName = $row['fullName'];
                 $ret[] = $newTweet;
             }
             //zostaje pusta tablica
@@ -22,6 +23,7 @@ class Tweet {
     private $id;
     private $userId;
     private $tweetText;
+    private $fullName;
     
     public function getId() {
         return $this->id;
@@ -74,23 +76,29 @@ class Tweet {
         return false;
     }
     
+//    public function getFullName() {
+//        $this->loadFromDB($conn, $this->id);
+//        return $this->FullName;
+//    }
+    
     public function show() {
-        echo "Dodano Tweet o treści:<br>";
-        echo "<strong>{$this->tweetText}</strong><br><br>";
+        echo "Tweet: $this->tweetText<br>";
+        echo "Author: $this->fullName<br>";
     }
     
     public function showLink(){
-        echo("<a href='tweet_details.php?tweetId={$this->id}'>{$this->tweetText}</a><br>");
+        echo "<a href='tweet_details.php?tweetId=$this->id'>Tweet details</a><br><br>";
     }
     
     public function loadFromDB(mysqli $conn, $id) {
-        $sql = "SELECT * FROM Tweet WHERE id = $id";
+        $sql = "SELECT Tweet.id, Tweet.userId, Tweet.tweetText, User.fullName FROM Tweet LEFT JOIN User ON Tweet.userId = User.id WHERE Tweet.id = $id";
         $result = $conn->query($sql);
         if($result !== false && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $this->id = $row['id'];
             $this->userId = $row['userId'];
             $this->tweetText = $row['tweetText'];
+            $this->fullName = $row['fullName'];
             return true;
         }
         return false;
@@ -99,40 +107,5 @@ class Tweet {
     public function getAllComments(mysqli $conn) {
         return Comment::getAllCommentsByPostId($conn, $this->id);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

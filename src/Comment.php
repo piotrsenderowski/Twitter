@@ -4,7 +4,7 @@ class Comment {
     
     static public function getAllCommentsByPostId(mysqli $conn, $postId) {
         $ret = [];
-        $sql = "SELECT * FROM Comment WHERE postId = $postId ORDER BY creationDate DESC";
+        $sql = "SELECT Comment.id, Comment.userId, Comment.postId, Comment.creationDate, Comment.commentText, User.fullName FROM Comment LEFT JOIN User ON Comment.userId = User.id WHERE Comment.postId = $postId ORDER BY creationDate ASC";
         $result = $conn->query($sql);
         if($result !== false && $result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -14,7 +14,8 @@ class Comment {
                 $newComment->postId = $row['postId'];
                 $newComment->creationDate = $row['creationDate'];
                 $newComment->commentText = $row['commentText'];
-                $ret = $newComment;
+                $newComment->fullName = $row['fullName'];
+                $ret[] = $newComment;
             }
         }
         return $ret;
@@ -25,6 +26,7 @@ class Comment {
     private $postId;
     private $creationDate;
     private $commentText;
+    private $fullName;
     
     public function getId() {
         return $this->id;
@@ -114,9 +116,9 @@ class Comment {
     }
     
     public function show() {
-        echo "Komentarz: $this->commentText <br>";
-        echo "Data dodania: $this->creationDate <br>";
-        echo "Dodane do postu o ID: $this->postId użytkownika o ID: $this->userId";
+        echo "Comment: $this->commentText <br>";
+        echo "Added on: $this->creationDate <br>";
+        echo "Added to postID: $this->postId by $this->fullName<br><br>";
         //$myUser = new User();
         //$myUser->loadFromDB($conn, $this->userId);
         //

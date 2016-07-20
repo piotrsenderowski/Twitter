@@ -3,18 +3,19 @@
 require_once 'src/connection.php';
 require_once 'src/User.php';
 require_once 'src/Tweet.php';
+require_once 'src/bootstrap.html';
 
 session_start();
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php"); // Przekierowanie do strony logowania
 }
+
 $loggedUser = new User();
 $loggedUser->loadFromDB($conn,  $_SESSION['loggedUserId']);
-echo "Witaj " . $loggedUser->getFullName() . "! <br> <a href='logout.php'>Logout</a><br><br>";
+echo "<h1>Witaj " . $loggedUser->getFullName() . "!</h1><p><a href='logout.php'>Logout</a></p>";
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
     
     $userId = $_SESSION['loggedUserId'];
     $tweetText = isset($_POST['tweet_text']) ? $conn->real_escape_string(trim($_POST['tweet_text'])) : null;
@@ -25,32 +26,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $newTweet->setUserId($userId);
             $newTweet->setTweetText($tweetText);
             $newTweet->saveToDB($conn);
-            $newTweet->show();
+            // TODO Jak zrobić, aby w momencie dodania nowego Tweeta (i wywołując poniższą metodę) wyświetlał się autor postu (fullname)
+            //$newTweet->show(); 
         }
         else {
-            echo "Twój Tweet ma za dużo znaków. Możesz użyć maksymalnie 140.<br>";
+            echo "<div class='alert alert-danger'>Your Tweet is too long. It cannot extend 140 characters.</div>";
         }
     }
     else {
-        echo "Nie możesz dodać pustego Tweeta.<br>";
+        echo "<div class='alert alert-danger'>You cannot add empty Tweet.</div>";
     }
 }
-//TODO - zapytać Jacka czy praktykuje się, aby przy takiej ilości $_SESSION['loggedUserId'], podstawić tę zmienną pod jakąś krótszą zmienną.
-echo "<a href='user_details.php?id={$loggedUser->getId()}'>Strona użytkownika</a><br>";
+
+echo "<a href='user_details.php?id={$loggedUser->getId()}'><button type='button' class='btn btn-info'>User details page</button></a><br><br>";
 
 ?>
 
 <form method="POST" action="#">
     <fieldset>
-        <label>Dodaj Tweeta</label><br>
-        <textarea name="tweet_text" placeholder="Treść Tweeta wpisz tutaj..." rows="4" cols="40" autofocus=""></textarea><br>
-        <input type="submit"/>
+        <label>Add new Tweet</label><br>
+        <textarea name="tweet_text" placeholder="Enter your Tweet here..." rows="4" cols="40" autofocus maxlength="140"></textarea><br>
+        <input type="submit" class="btn btn-info" value="Send Tweet"/>
     </fieldset>
 </form>
 
 <?php
 $tweets = $loggedUser->getAllTweets($conn);
 foreach($tweets as $oneTweet){
+    $oneTweet->show();
     $oneTweet->showLink();
 }
 

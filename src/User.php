@@ -135,7 +135,7 @@ class User {
         }
         return false;
     }
-    ///TODO Zapytać Jacka czy ta metoda ma tak wyglądać
+
     public function show() {
         echo "Nazwa użytkownika: $this->fullName<br>";
         echo "Id użytkownika: $this->id<br>";
