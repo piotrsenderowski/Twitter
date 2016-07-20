@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 20 Lip 2016, 08:00
+-- Czas wygenerowania: 20 Lip 2016, 22:46
 -- Wersja serwera: 5.5.49-0ubuntu0.14.04.1
 -- Wersja PHP: 5.5.9-1ubuntu4.17
 
@@ -23,6 +23,54 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `Comment`
+--
+
+CREATE TABLE IF NOT EXISTS `Comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) DEFAULT NULL,
+  `postId` int(11) DEFAULT NULL,
+  `creationDate` datetime NOT NULL,
+  `commentText` varchar(60) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `postId` (`postId`),
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Zrzut danych tabeli `Comment`
+--
+
+INSERT INTO `Comment` (`id`, `userId`, `postId`, `creationDate`, `commentText`) VALUES
+(1, 1, 4, '2016-07-20 21:07:21', 'To jest drugi komentarz do Tweeta nr 4.'),
+(2, 1, 4, '2016-07-20 21:07:28', 'To jest drugi komentarz do Tweeta nr 4.'),
+(3, 1, 4, '2016-07-20 21:07:10', 'asdasdasd'),
+(4, 1, 4, '2016-07-20 21:07:11', 'asdasdasd'),
+(5, 1, 4, '2016-07-20 22:07:21', 'Dodam kolejny komentarz i zobaczę co się stanie.'),
+(6, 1, 4, '2016-07-20 22:07:32', 'Jeszcze jeden dla przetestowania.'),
+(7, 2, 5, '2016-07-20 22:07:19', 'To jest pierwszy komentarz do pierwszego tweeta Pawła'),
+(8, 3, 6, '2016-07-20 22:07:56', 'To jest pierwszy comment pierwszego tweeta Jana.');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `Message`
+--
+
+CREATE TABLE IF NOT EXISTS `Message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `senderId` int(11) DEFAULT NULL,
+  `receiverId` int(11) DEFAULT NULL,
+  `messageText` text NOT NULL,
+  `messageStatus` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `senderId` (`senderId`),
+  KEY `receiverId` (`receiverId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `Tweet`
 --
 
@@ -32,57 +80,19 @@ CREATE TABLE IF NOT EXISTS `Tweet` (
   `tweetText` varchar(140) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Zrzut danych tabeli `Tweet`
 --
 
 INSERT INTO `Tweet` (`id`, `userId`, `tweetText`) VALUES
-(1, 3, 'Próbuję zapisać swojego pierwszego Tweeta.'),
-(2, 3, 'Próbuję zapisać swojego drugiego Tweeta.'),
-(3, 3, 'Próbuję zapisać swojego drugiego Tweeta.'),
-(4, 3, 'Próbuję zapisać swojego drugiego Tweeta.'),
-(5, 3, 'Dodaję Tweeta'),
-(6, 3, 'Dodaję Tweeta'),
-(7, 3, 'Tweet12345'),
-(8, 3, 'asdk asd asd kasd kasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd jkasdj kjasd kjasd kjasd kjasd kjasd kjasd kjasd jk asd asd asd'),
-(9, 3, 'asdk asd asd kasd kasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd jkasdj kjasd kjasd kjasd kjasd kjasd kjasd kjasd jk asd asd asd'),
-(10, 3, 'asdk asd asd kasd kasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd jkasdj kjasd kjasd kjasd kjasd kjasd kjasd kjasd jk asd asd asd'),
-(11, 3, 'aasdk asd asd kasd kasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd kjasd jkasdj kjasd kjasd kjasd kjasd kjasd kjasd kjasd jk asd asd as'),
-(12, 1, 'Użytkownik 1 właśnie dodaje pierwszego Tweeta.'),
-(13, 3, 'Testowy'),
-(14, 3, 'Testowy'),
-(15, 3, 'Testowy'),
-(16, 3, 'Testowy'),
-(17, 3, 'Testowy'),
-(18, 3, 'TESTOWY2'),
-(19, 3, 'TESTOWY2'),
-(20, 3, 'TESTOWY2'),
-(21, 3, 'TESTOWY2'),
-(22, 3, 'TESTOWY2'),
-(23, 3, 'TESTOWY2'),
-(24, 3, 'TESTOWY2'),
-(25, 3, 'TESTOWY2'),
-(26, 3, 'TESTOWY2'),
-(27, 3, 'TESTOWY2'),
-(28, 3, 'Dodaję Tweeta'),
-(29, 3, 'Dodaję Tweeta'),
-(30, 3, 'Dodaję Tweeta'),
-(31, 3, 'Dodaję Tweeta'),
-(32, 3, 'Dodaję Tweeta'),
-(33, 3, 'Dodaję Tweeta'),
-(34, 3, 'Dodaję Tweeta'),
-(35, 3, 'Dodaję Tweeta'),
-(36, 3, 'Dodaję Tweeta'),
-(37, 3, 'Dodaję Tweeta'),
-(38, 3, 'Dodaję Tweeta'),
-(39, 3, 'Dodaję Tweeta'),
-(40, 3, 'Dodaję Tweeta'),
-(41, 3, 'Dodaję Tweeta'),
-(42, 3, 'Dodaję Tweeta'),
-(43, 3, 'Dodaję Tweeta'),
-(44, 3, 'Ale jaja');
+(1, 1, 'To treść pierwszego Tweeta Piotra.'),
+(2, 1, 'To treść drugiego Tweeta Piotra.'),
+(3, 1, 'To treść trzeciego Tweeta Piotra.'),
+(4, 1, 'To treść czwartego Tweeta Piotra.'),
+(5, 2, 'To jest pierwszy Tweet Pawła.'),
+(6, 3, 'To jest pierwszy Tweet Jana');
 
 -- --------------------------------------------------------
 
@@ -98,24 +108,34 @@ CREATE TABLE IF NOT EXISTS `User` (
   `active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Zrzut danych tabeli `User`
 --
 
 INSERT INTO `User` (`id`, `email`, `password`, `fullName`, `active`) VALUES
-(1, 'coderslab@coderlsab.pl', '$2y$10$q74xncRzfH/JxQ7JmeuW/.f6HpWbjXUFFLYOTSBGkWGGO/eMO2lJq', 'Coderslab', 1),
-(2, 'abc@coderslab.pl', '$2y$10$kWeRget.x93QLWnB82lcGOzfj0LMUGFyZk3zj9StZpqR93biQN84G', 'CodersLab', 1),
-(3, 'test', '$2y$10$.XcPcFkIZtng5WawTkPfbeoJGxcD1InSjQqPQU7t0Sp9x/R4Uf99q', 'TestAccount', 1),
-(4, 'test2', '$2y$10$IMVrF0oSzRKRsZSh9V3X5eJMk6Zh6MnGR7tlIULLQsM1qXC9kgjVu', 'TestAccount2', 1),
-(5, 'test3', '$2y$10$WHYHmuRVoALI4AWCBVgJ4O4etCKPQyZ3G.c2tW3nLSV/GQ9hcVG82', 'TestAccount3', 1),
-(6, 'test4', '$2y$10$UnbvDCFHcY.wc1FhZQhIGu1d/WevnXBY7cjXOqZgudbgk3uz6QvAW', 'TestAccount4', 1),
-(7, 'test5', '$2y$10$k.7QVOJyu8tgazE1FPYLVunh6p33Oyd0KFsY2gfPb1ormLHVkKNwi', 'TestAccount5', 1);
+(1, 'piotr@test.pl', '$2y$10$pWmA/iMvuTHgKVfskwDjQ.FCLVMqQCDtxuQysW6kIu1rdY0wsuHg.', 'PiotrTestowy', 1),
+(2, 'pawel@test.pl', '$2y$10$BesHHnoum8T4.ONold.HiuNUb5In6dg/fHr6lNIyOvNixrFHvHKqa', 'PawelTestowy', 1),
+(3, 'jan@test.pl', '$2y$10$4oYwGg6FM7l/eWPcuBIq/O4J9WdIA0GKQ.EJzICzMgR2Cp.VjhjNu', 'JanTestowy', 1);
 
 --
 -- Ograniczenia dla zrzutów tabel
 --
+
+--
+-- Ograniczenia dla tabeli `Comment`
+--
+ALTER TABLE `Comment`
+  ADD CONSTRAINT `Comment_ibfk_1` FOREIGN KEY (`postId`) REFERENCES `Tweet` (`id`),
+  ADD CONSTRAINT `Comment_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `User` (`id`);
+
+--
+-- Ograniczenia dla tabeli `Message`
+--
+ALTER TABLE `Message`
+  ADD CONSTRAINT `Message_ibfk_1` FOREIGN KEY (`senderId`) REFERENCES `User` (`id`),
+  ADD CONSTRAINT `Message_ibfk_2` FOREIGN KEY (`receiverId`) REFERENCES `User` (`id`);
 
 --
 -- Ograniczenia dla tabeli `Tweet`
