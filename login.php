@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = isset($_POST['email']) ? $conn->real_escape_string(trim($_POST['email'])) : null; //zabezpieczamy sie przed sql injection
     $password = isset($_POST['password']) ? trim($_POST['password']) : null;
     
-    if(strlen($email) >= 5 && strlen($password) > 0) {
+    if(strlen($email) >= 0 && strlen($password) > 0) {
         if($userId = User::logIn($conn, $email, $password)) {
             $_SESSION['loggedUserId'] = $userId;
             header("Location: index.php");

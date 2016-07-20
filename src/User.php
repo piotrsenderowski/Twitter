@@ -26,17 +26,16 @@ class User {
         if($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             $user = new User();
-            $user->setId($row['id']);
+            $user->id = $row['id'];
             $user->setEmail($row['email']);
             $user->setPassword($row['password']);
             $user->setFullName($row['fullName']);
             $user->setActive($row['active']);
             return $user;
         }
-        else {
-            return false;
-        }
+        return NULL;
     }
+    
     private $id;
     private $email;
     private $password;
@@ -51,32 +50,43 @@ class User {
         $this->active = 0;
     }
     
-    public function setId($id) {
-        $this->id = is_integer($id) ? $id : -1;
+    public function getId() {
+        return $this->id;
+    }
+    
+    public function setEmail($newEmail) {
+        $this->email = is_string($newEmail) ? $newEmail : '';
         return $this;
     }
     
-    public function setEmail($email) {
-        $this->email = is_string($email) ? $email : '';
+    public function getEmail() {
+        return $this->email;
+    }
+    
+    public function setPassword($newPassword) {
+        $this->password = is_string($newPassword) ? $newPassword : '';
         return $this;
     }
     
-    public function setPassword($password) {
-        $this->password = is_string($password) ? $password : '';
+    public function setHashedPassword($newPassword) {
+        $this->password = is_string($newPassword) ? password_hash($newPassword, PASSWORD_DEFAULT) : '';
+    }
+    
+    public function setFullName($newFullName) {
+        $this->fullName = is_string($newFullName) ? $newFullName : '';
         return $this;
     }
     
-    public function setHashedPassword($password) {
-        $this->password = is_string($password) ? password_hash($password, PASSWORD_DEFAULT) : '';
+    public function getFullName() {
+        return $this->fullName;
     }
     
-    public function setFullName($fullName) {
-        $this->fullName = is_string($fullName) ? $fullName : '';
-        return $this;
+    public function setActive($newActive) {
+        $this->active = $newActive == 0 || $newActive == 1 ? $newActive : 0;
     }
     
-    public function setActive($active) {
-        $this->active = $active == 0 || $active == 1 ? $active : 0;
+    public function getActive() {
+        return $this->active;
     }
     
     public function saveToDB(mysqli $conn) {
@@ -89,7 +99,7 @@ class User {
                     $this->active)";
             if($conn->query($sql)) {
                 $this->id = $conn->insert_id;
-                return $this;
+                return true;
             }
             else {
                 return false;
@@ -103,11 +113,35 @@ class User {
                     active = $this->active
                     WHERE id = $this->id";
             if($conn->query($sql)) {
-                return $this;
+                return true;
             }
             else {
                 return false;
             }
         }
+    }
+    //TODO Zapytać Jacka czy tą metodę mam wywołać na stronie głównej? W treści zadania chyba jest inaczej.
+    public function getAllTweets(mysqli $conn) {
+        return Tweet::getAllTweetsByUserId($conn, $this->id);
+    }
+    
+    public function loadFromDB(mysqli $conn, $id) {
+        $sql = "SELECT * FROM User WHERE id = $id";
+        $result = $conn->query($sql);
+        if($result !== false && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $this->id = $row['id'];
+            $this->email = $row['email'];
+            $this->fullName = $row['fullName'];
+            $this->active = $row['active'];
+            return true;
+        }
+        return false;
+    }
+    ///TODO Zapytać Jacka czy ta metoda ma tak wyglądać
+    public function show() {
+        echo "Nazwa użytkownika: $this->fullName<br>";
+        echo "Id użytkownika: $this->id<br>";
+        echo "Login: $this->email";
     }
 }

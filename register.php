@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'src/connection.php';
@@ -18,7 +19,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newUser->setFullName($fullName);
         $newUser->setActive(1);
         if($newUser->saveToDB($conn)) {
-            header("Location: login.php");
+            $_SESSION['loggedUserId'] = $newUser->getId();
+            header("Location: index.php");
         }
         else {
             echo "Registration failed.<br>";

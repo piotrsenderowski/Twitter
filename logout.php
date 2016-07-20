@@ -3,6 +3,6 @@
 session_start();
 
 if(isset($_SESSION['loggedUserId'])) {
-    unset($_SERVER['loggedUserId']);
+    unset($_SESSION['loggedUserId']);
 }
 header("Location: index.php");
