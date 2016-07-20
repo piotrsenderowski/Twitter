@@ -97,7 +97,7 @@ class Tweet {
     }
     
     public function getAllComments(mysqli $conn) {
-        return Comment::getAllCommentsByPostId($conn, $postId);
+        return Comment::getAllCommentsByPostId($conn, $this->id);
     }
     
     

@@ -74,7 +74,7 @@ class Comment {
     public function loadFromDB(mysqli $conn, $id) {
         $sql = "SELECT * FROM Comment WHERE id = $id";
         $result = $conn->query($sql);
-        if($result !== false && $result->num_rows = 0) {
+        if($result !== false && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $this->id = $row['id'];
             $this->userId = $row['userId'];
@@ -93,7 +93,8 @@ class Comment {
                     VALUES ($this->userId,
                     $this->postId,
                     '$this->creationDate',
-                    '$this->commentText'";
+                    '$this->commentText')";
+            var_dump($sql);
             if($conn->query($sql)) {
                 $this->id = $conn->insert_id;
                 return true;
@@ -116,12 +117,6 @@ class Comment {
     public function show() {
         echo "Komentarz: $this->commentText <br>";
         echo "Data dodania: $this->creationDate <br>";
-        echo "Dodane do postu o ID: $this->postId użytkownika o ID $this->userId";
+        echo "Dodane do postu o ID: $this->postId użytkownika o ID: $this->userId";
     }
-    
-    private $id;
-    private $userId;
-    private $postId;
-    private $creationDate;
-    private $commentText;
 }
