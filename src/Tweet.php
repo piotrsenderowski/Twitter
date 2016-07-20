@@ -65,7 +65,7 @@ class Tweet {
         else {
             $sql = "UPDATE Tweet SET
                     userId = $this->userId,
-                    tweetText = $this->tweetText
+                    tweetText = '$this->tweetText',
                     WHERE id = $this->id";
             if($conn->query($sql)) {
                 return true;
@@ -94,11 +94,10 @@ class Tweet {
             return true;
         }
         return false;
-        
     }
     
-    public function getAllComments() {
-        
+    public function getAllComments(mysqli $conn) {
+        return Comment::getAllCommentsByPostId($conn, $postId);
     }
     
     
