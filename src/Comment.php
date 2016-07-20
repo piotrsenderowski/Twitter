@@ -94,18 +94,17 @@ class Comment {
                     $this->postId,
                     '$this->creationDate',
                     '$this->commentText')";
-            var_dump($sql);
             if($conn->query($sql)) {
                 $this->id = $conn->insert_id;
                 return true;
             }
         }
         else {
-            $sqlu = "UPDATE Comment SET
+            $sql = "UPDATE Comment SET
                     userId = $this->userId,
                     postId = $this->postId,
                     creationDate = '$this->creationDate',
-                    commentText = '$this->commentText',
+                    commentText = '$this->commentText'
                     WHERE id = $this->id";
             if($conn->query($sql)) {
                 return true;
@@ -118,5 +117,8 @@ class Comment {
         echo "Komentarz: $this->commentText <br>";
         echo "Data dodania: $this->creationDate <br>";
         echo "Dodane do postu o ID: $this->postId użytkownika o ID: $this->userId";
+        //$myUser = new User();
+        //$myUser->loadFromDB($conn, $this->userId);
+        //
     }
 }

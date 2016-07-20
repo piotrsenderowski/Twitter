@@ -56,7 +56,6 @@ class User {
     
     public function setEmail($newEmail) {
         $this->email = is_string($newEmail) ? $newEmail : '';
-        return $this;
     }
     
     public function getEmail() {
@@ -65,7 +64,6 @@ class User {
     
     public function setPassword($newPassword) {
         $this->password = is_string($newPassword) ? $newPassword : '';
-        return $this;
     }
     
     public function setHashedPassword($newPassword) {
@@ -74,7 +72,6 @@ class User {
     
     public function setFullName($newFullName) {
         $this->fullName = is_string($newFullName) ? $newFullName : '';
-        return $this;
     }
     
     public function getFullName() {
@@ -143,5 +140,13 @@ class User {
         echo "Nazwa użytkownika: $this->fullName<br>";
         echo "Id użytkownika: $this->id<br>";
         echo "Login: $this->email";
+    }
+    
+    public function getAllReceivedMessages(mysqli $conn) {
+        return Message::getAllMessagesByReceiverId($conn, $this->id);
+    }
+    
+    public function getAllSendMessages(mysqli $conn) {
+        return Message::getAllMessagesBySenderId($conn, $this->id);
     }
 }
