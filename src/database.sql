@@ -19,3 +19,14 @@ CREATE TABLE Tweet (
     PRIMARY KEY(id),
     FOREIGN KEY(userId) REFERENCES User(id)
 )
+
+CREATE TABLE Comment (
+    id INT AUTO_INCREMENT,
+    userId INT,
+    postId INT,
+    creationDate DATETIME NOT NULL,
+    commentText VARCHAR(60) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(postId) REFERENCES Tweet(id),
+    FOREIGN KEY(userId) REFERENCES User(id)
+)
