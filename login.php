@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <fieldset>
                 <label>
                     E-mail:<br>
-                    <input type="text" name="email">
+                    <input type="text" name="email" autofocus>
                 </label>
                 <br>
                 <label>

@@ -60,6 +60,14 @@ class Tweet {
                     VALUES ($this->userId,
                     '$this->tweetText')";
             if($conn->query($sql)) {
+                $sql2 = "SELECT fullName FROM User WHERE id = $this->userId";
+                if($conn->query($sql2)) {
+                    $result = $conn->query($sql2);
+                    if($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        $this->fullName = $row['fullName'];
+                    }
+                }
                 $this->id = $conn->insert_id;
                 return true;
             }
@@ -75,11 +83,6 @@ class Tweet {
         }
         return false;
     }
-    
-//    public function getFullName() {
-//        $this->loadFromDB($conn, $this->id);
-//        return $this->FullName;
-//    }
     
     public function show() {
         echo "Tweet: $this->tweetText<br>";

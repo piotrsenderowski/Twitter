@@ -97,6 +97,14 @@ class Comment {
                     '$this->creationDate',
                     '$this->commentText')";
             if($conn->query($sql)) {
+//                $sql2 = "SELECT fullName FROM User WHERE id = $this->userId";
+//                if($conn->query($sql2)) {
+//                    $result = $conn->query($sql2);
+//                    if($result->num_rows > 0) {
+//                        $row = $result->fetch_assoc();
+//                        $this->fullName = $row['fullName'];
+//                    }   
+//                }
                 $this->id = $conn->insert_id;
                 return true;
             }

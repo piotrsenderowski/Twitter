@@ -20,6 +20,42 @@ class User {
         }
     }
     
+    public function changePassword(mysqli $conn, $id, $oldPassword, $newPassword) {
+        $sql = "SELECT * FROM User WHERE id = $id";
+        $result = $conn->query($sql);
+        if($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            if(password_verify($oldPassword, $row['password'])) {
+                $this->setHashedPassword($newPassword);
+                $this->saveToDB($conn);
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    
+    static public function getUsersByActive(mysqli $conn, $active) {
+        $ret = [];
+        $sql = "SELECT * FROM User WHERE active = $active";
+        $result = $conn->query($sql);
+        if($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $newUser = new User();
+                $newUser->id = $row['id']; 
+                $newUser->email = $row['email'];
+                $newUser->fullName = $row['fullName'];
+                $newUser->active = $row['active'];
+                $ret[] = $newUser;
+            }      
+        }
+        return $ret;
+    }
+    
     static public function getUserByEmail(mysqli $conn, $email) {
         $sql = "SELECT * FROM User WHERE email = '$email'";
         $result = $conn->query($sql);
@@ -139,7 +175,14 @@ class User {
     public function show() {
         echo "Nazwa użytkownika: $this->fullName<br>";
         echo "Id użytkownika: $this->id<br>";
-        echo "Login: $this->email";
+        echo "Login: $this->email<br>";
+    }
+    
+    public function showWithLink() {
+        echo "Nazwa użytkownika: $this->fullName<br>";
+        echo "Id użytkownika: $this->id<br>";
+        echo "Login: $this->email<br>";
+        echo "<a href='user_details.php?userId=$this->id'><button type='button' class='btn btn-info'>$this->fullName - details page</button></a><br><br>";
     }
     
     public function getAllReceivedMessages(mysqli $conn) {

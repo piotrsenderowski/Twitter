@@ -21,7 +21,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postId = $newTweet->getId();
     $creationDate = date('Y-m-d H-m-s');
     $commentText = isset($_POST['comment_text']) ? $conn->real_escape_string(trim($_POST['comment_text'])) : NULL;
-    
     if(strlen($commentText) > 0) {
         if(strlen($commentText) <= 60) {
             $newComment = new Comment();

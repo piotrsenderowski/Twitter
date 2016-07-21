@@ -3,6 +3,8 @@
 require_once 'src/connection.php';
 require_once 'src/User.php';
 require_once 'src/Tweet.php';
+require_once 'src/Comment.php';
+require_once 'src/Message.php';
 require_once 'src/bootstrap.html';
 
 session_start();
@@ -13,7 +15,12 @@ if(!$_SESSION['loggedUserId']) {
 
 $loggedUser = new User();
 $loggedUser->loadFromDB($conn,  $_SESSION['loggedUserId']);
-echo "<h1>Witaj " . $loggedUser->getFullName() . "!</h1><p><a href='logout.php'>Logout</a></p>";
+
+echo "<h1>Hello " . $loggedUser->getFullName() . "!</h1><p><a href='logout.php'>Logout</a></p>";
+
+echo "<a href='message_box.php'><button type='button' class='btn btn-success'>Message box</button></a><br><br>";
+
+echo "<a href='user_edit.php?userId={$_SESSION['loggedUserId']}'><button type='button' class='btn btn-success'>Edit user data</button></a><br><br>";
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     
@@ -26,7 +33,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $newTweet->setUserId($userId);
             $newTweet->setTweetText($tweetText);
             $newTweet->saveToDB($conn);
-            // TODO Jak zrobić, aby w momencie dodania nowego Tweeta (i wywołując poniższą metodę) wyświetlał się autor postu (fullname)
             //$newTweet->show(); 
         }
         else {
@@ -38,7 +44,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-echo "<a href='user_details.php?id={$loggedUser->getId()}'><button type='button' class='btn btn-info'>User details page</button></a><br><br>";
+echo "<a href='user_details.php?userId={$loggedUser->getId()}'><button type='button' class='btn btn-success'>My details page</button></a><br><br>";
+
+echo "<a href='users.php'><button type='button' class='btn btn-success'>See all users</button></a><br><br>";
 
 ?>
 

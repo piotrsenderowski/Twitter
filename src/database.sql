@@ -41,3 +41,15 @@ CREATE TABLE Message (
     FOREIGN KEY(senderId) REFERENCES User(id),
     FOREIGN KEY(receiverId) REFERENCES User(id)
 )
+
+CREATE TABLE Message (
+    id INT AUTO_INCREMENT,
+    senderId INT,
+    receiverId INT,
+    messageText TEXT NOT NULL,
+    messageStatus TINYINT DEFAULT 0,
+    sendDate DATETIME NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(senderId) REFERENCES User(id),
+    FOREIGN KEY(receiverId) REFERENCES User(id)
+)

@@ -6,27 +6,43 @@ require_once 'src/Comment.php';
 require_once 'src/Message.php';
 
 $newMessage = new Message();
-$newMessage->setSenderId(4);
-$newMessage->setReceiverId(3);
+$newMessage->setSenderId(1);
+$newMessage->setReceiverId(2);
 $newMessage->setMessageText('Przykładowa treść wiadomości');
 $newMessage->setMessageStatus(0);
+$sendDate = date('Y-m-d H:m:s');
+$newMessage->setSendDate($sendDate);
 var_dump($newMessage);
-$newMessage->saveToDB($conn);
+$newMessage->setMessageStatus(1);
 var_dump($newMessage);
 
-$user = new User();
-$user->loadFromDB($conn, 5);
-$messages = $user->getAllReceivedMessages($conn);
-foreach($messages as $oneMessage) {
-    $oneMessage->show();
-    echo "<br>";
-}
-$messages = Message::getAllMessagesBySenderId($conn, 3);
-foreach($messages as $oneMessage) {
-    $oneMessage->show();
-    echo "<br>";
-}
+$new = $newMessage->saveToDB($conn); //insert
+var_dump($new); //true
+$newMessage->loadFromDB($conn, 7);
+$newMessage->setMessageStatus(0);
+$newMessage->saveToDB($conn); //update
+$new2 = $newMessage->saveToDB($conn);//update
+var_dump($new2); //
+var_dump($newMessage); //false
+//$newMessage->loadFromDB($conn, $id);
 
+//var_dump($newMessage);
+//
+//$user = new User();
+//$user->loadFromDB($conn, 5);
+//$messages = $user->getAllReceivedMessages($conn);
+//foreach($messages as $oneMessage) {
+//    $oneMessage->show();
+//    echo "<br>";
+//}
+//$messages = Message::getAllMessagesBySenderId($conn, 3);
+//foreach($messages as $oneMessage) {
+//    $oneMessage->show();
+//    echo "<br>";
+//}
+//
+//    $sendDate = date('Y-m-d H:m:s');
+//    var_dump($sendDate);
 //$newComment = new Comment();
 //$newComment->setUserId(3);
 //$newComment->setPostId(5);
