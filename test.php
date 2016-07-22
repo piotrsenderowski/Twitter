@@ -4,7 +4,8 @@ require_once 'src/User.php';
 require_once 'src/Tweet.php';
 require_once 'src/Comment.php';
 require_once 'src/Message.php';
-
+var_dump(dirname(__FILE__));
+/*
 $newMessage = new Message();
 $newMessage->setSenderId(1);
 $newMessage->setReceiverId(2);
