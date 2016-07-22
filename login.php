@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . 'src/common.php';
+require_once dirname(__FILE__) . '/src/common.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     

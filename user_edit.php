@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . 'src/common.php';
+require_once dirname(__FILE__) . '/src/common.php';
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php");

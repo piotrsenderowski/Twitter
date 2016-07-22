@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . 'src/common.php';
+require_once dirname(__FILE__) . '/src/common.php';
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php"); // Przekierowanie do strony logowania
@@ -14,15 +14,20 @@ $newMessage->setSenderId($senderId);
 $newMessage->setReceiverId($receiverId);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $messageText = $_POST['message_text'];
-    $messageStatus = 1;
+    $messageText = isset($_POST['message_text']) ? $conn->real_escape_string(trim($_POST['message_text'])) : '';
     $sendDate = date('Y-m-d H:i:s');
-    $newMessage->setMessageText($messageText);
-    $newMessage->setMessageStatus($messageStatus);
-    $newMessage->setSendDate($sendDate);
-    $newMessage->saveToDB($conn);
-    header("Location: message_info.php?messageId={$newMessage->getId()}");
-    //header("Location: messages.php?senderId={$_SESSION['loggedUserId']}&receiverId={$newMessage->getReceiverId()}");
+    if(strlen($messageText) > 0) {
+        $messageStatus = 1;
+        $newMessage->setMessageText($messageText);
+        $newMessage->setMessageStatus($messageStatus);
+        $newMessage->setSendDate($sendDate);
+        $newMessage->saveToDB($conn);
+        header("Location: message_info.php?messageId={$newMessage->getId()}");
+        //header("Location: messages.php?senderId={$_SESSION['loggedUserId']}&receiverId={$newMessage->getReceiverId()}");
+    }
+    else {
+        echo "<div class='alert alert-danger'>You cannot send empty message.</div>";
+    }
 }
 
 $newUser = new User();
