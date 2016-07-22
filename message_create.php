@@ -16,7 +16,7 @@ $newMessage->setReceiverId($receiverId);
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $messageText = $_POST['message_text'];
     $messageStatus = 1;
-    $sendDate = date('Y-m-d H:m:s');
+    $sendDate = date('Y-m-d H:i:s');
     $newMessage->setMessageText($messageText);
     $newMessage->setMessageStatus($messageStatus);
     $newMessage->setSendDate($sendDate);

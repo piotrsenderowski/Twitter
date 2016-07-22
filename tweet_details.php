@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $userId = $_SESSION['loggedUserId'];
     $postId = $newTweet->getId();
-    $creationDate = date('Y-m-d H-m-s');
+    $creationDate = date('Y-m-d H-i-s');
     $commentText = isset($_POST['comment_text']) ? $conn->real_escape_string(trim($_POST['comment_text'])) : NULL;
     if(strlen($commentText) > 0) {
         if(strlen($commentText) <= 60) {
