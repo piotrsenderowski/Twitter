@@ -1,12 +1,6 @@
 <?php
 
-require_once 'src/connection.php';
-require_once 'src/User.php';
-require_once 'src/Tweet.php';
-require_once 'src/Comment.php';
-require_once 'src/bootstrap.html';
-
-session_start();
+require_once 'src/common.php';
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php");
@@ -38,26 +32,48 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<div class='alert alert-danger'>You cannot add empty comment.</div>";
     }
 }
-
-$newTweet->show();
-
-$comments = $newTweet->getAllComments($conn);
-if(count($comments) == 0) {
-    echo "No comments yet.<br><br>";
-}
-else {
-    echo "<br>Comments made on Tweet: <br>";
-    foreach($comments as $oneComment) {
-        $oneComment->show();
-    }
-}
-
 ?>
 
-<form method="POST">
-    <fieldset>
-        <label>Comment on this tweet:</label><br>
-        <textarea name="comment_text" placeholder="Enter your comment here..." rows="2" cols="40" maxlength="60" autofocus></textarea><br>
-        <input type="submit" class="btn btn-info" value="Add comment"/>
-    </fieldset>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Twitter</title>
+</head>
+<body>
+    <div class="container">
+        <?php
+        $newTweet->show();
+
+        $comments = $newTweet->getAllComments($conn);
+        if(count($comments) == 0) {
+            echo "No comments yet.<br><br>";
+        }
+        else {
+            echo "<br>Comments made on Tweet: <br>";
+            foreach($comments as $oneComment) {
+                $oneComment->show();
+            }
+        }
+        
+        $conn->close();
+        $conn = null;
+        
+        ?>
+    </div>
+    
+    <div class="container">
+        <form method="POST">
+            <form method="POST">
+            <fieldset>
+                <label>Comment on this tweet:</label><br>
+                <textarea name="comment_text" placeholder="Enter your comment here..." rows="2" cols="40" maxlength="60" autofocus></textarea><br>
+                <input type="submit" class="btn btn-info" value="Add comment"/>
+            </fieldset>
+        </form>
+
+        </form>
+    </div>
+ 
+</body>
+</html>

@@ -1,12 +1,6 @@
 <?php
-require_once 'src/connection.php';
-require_once 'src/User.php';
-require_once 'src/Tweet.php';
-require_once 'src/Comment.php';
-require_once 'src/Message.php';
-require_once 'src/bootstrap.html';
 
-session_start();
+require_once 'src/common.php';
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php"); // Przekierowanie do strony logowania
@@ -45,3 +39,10 @@ $newUser->loadFromDB($conn, $_GET['receiverId']);
 
 <button type='button' class='btn btn-success' onclick='goBack()'>Back to user details</button><br><br>
 <a href='index.php'><button type='button' class='btn btn-success'>Back to main menu</button></a><br><br>
+
+<?php
+
+$conn->close();
+$conn = null;
+
+?>

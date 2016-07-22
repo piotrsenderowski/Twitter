@@ -1,12 +1,6 @@
 <?php
-require_once 'src/connection.php';
-require_once 'src/User.php';
-require_once 'src/Tweet.php';
-require_once 'src/Comment.php';
-require_once 'src/Message.php';
-require_once 'src/bootstrap.html';
 
-session_start();
+require_once 'src/common.php';
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php");
@@ -28,3 +22,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 echo "<a href='index.php'><button type='button' class='btn btn-success'>Back to main page</button></a><br><br>";
+
+$conn->close();
+$conn = null;
+
+?>

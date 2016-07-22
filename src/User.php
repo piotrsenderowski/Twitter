@@ -28,6 +28,7 @@ class User {
             if(password_verify($oldPassword, $row['password'])) {
                 $this->setHashedPassword($newPassword);
                 $this->saveToDB($conn);
+                return true;
             }
             else {
                 return false;
@@ -38,6 +39,11 @@ class User {
         }
     }
     
+    public function changeFullName(mysqli $conn, $id, $newFullName) {
+        $this->setFullName($newFullName);
+        $this->saveToDB($conn);
+        return true;
+    }
     
     static public function getUsersByActive(mysqli $conn, $active) {
         $ret = [];

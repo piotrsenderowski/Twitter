@@ -1,9 +1,12 @@
 <?php
-session_start();
+
+require_once 'src/common.php';
+
+if(!$_SESSION['loggedUserId']) {
+    header("Location: login.php");
+}
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once 'src/connection.php';
-    require_once 'src/User.php';
     
     $email = isset($_POST['email']) ? $conn->real_escape_string(trim($_POST['email'])) : null;
     $password = isset($_POST['password']) ? $conn->real_escape_string(trim($_POST['password'])) : null;
@@ -38,6 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn = null;
 }
 ?>
+
 <html>
     <head>
         

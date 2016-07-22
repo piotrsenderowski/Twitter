@@ -1,10 +1,8 @@
 <?php
 
-session_start();
+require_once 'src/common.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once 'src/connection.php';
-    require_once 'src/User.php';
     
     $email = isset($_POST['email']) ? $conn->real_escape_string(trim($_POST['email'])) : null; //zabezpieczamy sie przed sql injection
     $password = isset($_POST['password']) ? trim($_POST['password']) : null;
@@ -18,9 +16,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Niepoprawne dane logowanie.<br>";
         }
     }
-    $conn->close();
-    $conn = null;
+
 } 
+
+$conn->close();
+$conn = null;
 
 ?>
 

@@ -1,12 +1,6 @@
 <?php
-require_once 'src/connection.php';
-require_once 'src/User.php';
-require_once 'src/Tweet.php';
-require_once 'src/Comment.php';
-require_once 'src/Message.php';
-require_once 'src/bootstrap.html';
 
-session_start();
+require_once 'src/common.php';
 
 if(!$_SESSION['loggedUserId']) {
     header("Location: login.php");
@@ -29,23 +23,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newPassword = isset($_POST['new_password']) ? $conn->real_escape_string(trim($_POST['new_password'])) : null;
         $newPassword2 = isset($_POST['new_password2']) ? trim($_POST['new_password2']) : null;
         $oldPassword = isset($_POST['old_password']) ? $conn->real_escape_string(trim($_POST['old_password'])) : null;
-        $newName = isset($_POST['new_full_name']) ? $conn->real_escape_string($_POST['new_full_name']) : null;
+        $newFullName = isset($_POST['new_full_name']) ? $conn->real_escape_string($_POST['new_full_name']) : null;
         
-        if((strlen($newPassword > 0 && strlen($newPassword2) > 0 && $newPassword === $newPassword2)) || strlen($newName) > 0) {
-            $newUser = new User();
-            $newUser->loadFromDB($conn, $userId);
-            if($newUser->changePassword($conn, $userId, $oldPassword, $newPassword)) {
-                echo "New password has been saved to database";
+        $newUser = new User();
+        $newUser->loadFromDB($conn, $userId);
+        
+        if((strlen($newPassword) > 0 && strlen($newPassword2) > 0 && $newPassword === $newPassword2) && strlen($newFullName) > 0) {
+            if(($newUser->changePassword($conn, $userId, $oldPassword, $newPassword)) && ($newUser->changeFullName($conn, $userId, $newFullName))) {
+                echo "All new data have been set successfuly.";
             }
-            else {
-                echo "Unable to change password. Make sure you entered the new password correctly twice and provided correct old password.";
+        }
+        elseif((strlen($newPassword) > 0 && strlen($newPassword2) > 0 && $newPassword === $newPassword2) && strlen($newFullName) === 0) {
+            if($newUser->changePassword($conn, $userId, $oldPassword, $newPassword)) {
+                echo "New password has been set successfuly.";
+            }
+        }
+        elseif((strlen($newPassword) === 0 && strlen($newPassword2) === 0 && $newPassword === $newPassword2) && strlen($newFullName) > 0) {
+            if($newUser->changeFullName($conn, $userId, $newFullName)) {
+                echo "New user name has been set successfuly.";
             }
         }
         else {
-            echo "Unable to change password. Make sure you entered the new password correctly twice and provided correct old password.";
+            echo "Something went wrong. Please try again.";
         }
     }
 }
+
+$conn->close();
+$conn = null;
 
 ?>
 
@@ -61,7 +66,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" name="new_full_name" placeholder="Enter your new user name here..."/><br>
         <input type="submit" class="btn btn-info" value="Zapisz nowe dane!"/>
     </fieldset>
-</form>    
+</form>
+<button type='button' class='btn btn-success' onclick='goBack()'>Back to user details</button><br><br>
     
     
     
