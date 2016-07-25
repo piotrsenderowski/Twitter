@@ -171,6 +171,7 @@ class User {
             $row = $result->fetch_assoc();
             $this->id = $row['id'];
             $this->email = $row['email'];
+            $this->password = $row['password'];
             $this->fullName = $row['fullName'];
             $this->active = $row['active'];
             return true;
